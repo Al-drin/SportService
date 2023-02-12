@@ -1,0 +1,34 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'io.freefair.lombok' version '6.5.0.3'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':app')
+    implementation project(':data')
+    jar {
+        manifest {
+            attributes 'Main-Class': 'org.example.Application'
+        }
+        from {
+            configurations.compileClasspath.
+                    findAll { it.name.endsWith('jar') }.collect
+                    { zipTree(it) }
+        }
+    }
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+test {
+    useJUnitPlatform()
+}

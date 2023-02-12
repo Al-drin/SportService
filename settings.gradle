@@ -1,0 +1,5 @@
+rootProject.name = 'SportService'
+include 'api'
+include 'app'
+include 'data'
+

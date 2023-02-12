@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: Sportradar Academy BE
+  description: This is a simple API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: event-controller
+    description: the vet-service API
+paths:
+  /sportservice/events:
+    get:
+      tags:
+        - event-controller
+      summary: List events by given parameters
+      operationId: getEvents
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventModel'
+    post:
+      tags:
+        - event-controller
+      summary: Add events to database
+      operationId: addEvents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Events:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EventModel'
+                  
+      responses:
+        '201':
+          description: created successfully
+        '400':
+          description: creation unsucceful
+components:
+  schemas:
+    EventModel:
+      type: object
+      properties:
+        sport_event_id:
+          type: string
+          example: sr:sport_event:27636100
+        start_date:
+          type: string
+          format: date-time
+          example: 2021-08-10 17:00:00
+        sport_name:
+          type: string
+          example: Soccer
+        competition_name:
+          type: string
+          example: UEFA Champions League
+        competition_id:
+          type: string
+          example: sr:competition:7
+        season_name:
+          type: string
+          example: UEFA Champions League 21/22
+        competitors:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompetitorModel'
+          minItems: 2
+          maxItems: 2
+        venue:
+          $ref: '#/components/schemas/VenueModel'
+        probability_home_team_winner:
+          type: number
+          example: 2.5
+        probability_draw:
+          type: number
+          example: 88.1
+        probability_away_team_winner:
+          type: number
+          example: 9.4
+    CompetitorModel:
+      type: object
+      properties:
+        id: 
+          type: string
+          example: sr:competitor:37863
+        name:
+          type: string
+          example: SS Folgore Falciano Calcio
+        country:
+          type: string
+          example: San Marino
+        country_code:
+          type: string
+          example: SMR
+        abbreviation:
+          type: string
+          example: FFC
+        qualifier:
+          type: string
+          example: home
+        gender:
+          type: string
+          example: male
+    VenueModel:
+      type: object
+      properties:
+        id:
+          type: string
+          example: sr:venue:18653
+        name:
+          type: string
+          example: Niko Dovana Stadium
+        capacity:
+          type: integer
+          example: 12040
+        city_name:
+          type: string
+          example: Durres
+        country_name:
+          type: string
+          example: Albania
+        map_coordinates:
+          type: string
+          example: 41.326081,19.449856
+        country_code:
+          type: string
+          example: ALB
