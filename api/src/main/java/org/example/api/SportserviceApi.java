@@ -5,7 +5,6 @@
  */
 package org.example.api;
 
-import org.example.model.EventModel;
 import org.example.model.InlineObject;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-12T14:31:36.948997300+01:00[Europe/Warsaw]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-12T18:16:53.877393400+01:00[Europe/Warsaw]")
 @Validated
 @Api(value = "sportservice", description = "the sportservice API")
 public interface SportserviceApi {
@@ -48,16 +47,16 @@ public interface SportserviceApi {
     /**
      * GET /sportservice/events : List events by given parameters
      *
-     * @return successful operation (status code 200)
+     * @return A PDF file (status code 200)
      */
-    @ApiOperation(value = "List events by given parameters", nickname = "getEvents", notes = "", response = EventModel.class, responseContainer = "List", tags={ "event-controller", })
+    @ApiOperation(value = "List events by given parameters", nickname = "getEvents", notes = "", response = String.class, tags={ "event-controller", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = EventModel.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "A PDF file", response = String.class) })
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/sportservice/events",
-        produces = { "application/json" }
+        produces = { "text/plain" }
     )
-    ResponseEntity<List<EventModel>> getEvents();
+    ResponseEntity<String> getEvents();
 
 }

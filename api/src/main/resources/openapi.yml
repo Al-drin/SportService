@@ -17,13 +17,11 @@ paths:
       operationId: getEvents
       responses:
         '200':
-          description: successful operation
+          description: A PDF file
           content:
-            application/json:
+            text/plain:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EventModel'
+                type: string
     post:
       tags:
         - event-controller
