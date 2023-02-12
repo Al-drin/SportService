@@ -32,7 +32,8 @@ public class EventConverter {
                 VenueConverter.convertModel(model.getVenue()),
                 model.getProbabilityHomeTeamWinner(),
                 model.getProbabilityDraw(),
-                model.getProbabilityAwayTeamWinner());
+                model.getProbabilityAwayTeamWinner(),
+                model.getProbabilityHomeTeamWinner().max(model.getProbabilityDraw()).max(model.getProbabilityAwayTeamWinner()));
     }
 
     public static EventModel convertEvent(Event event) {

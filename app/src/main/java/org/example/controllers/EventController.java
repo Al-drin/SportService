@@ -2,7 +2,6 @@ package org.example.controllers;
 
 import org.example.api.SportserviceApi;
 import org.example.converters.EventConverter;
-import org.example.domain.Event;
 import org.example.model.EventModel;
 import org.example.model.InlineObject;
 import org.example.repository.EventRepository;
@@ -31,6 +30,9 @@ public class EventController implements SportserviceApi {
 
     @Override
     public ResponseEntity<List<EventModel>> getEvents() {
-        return null;
+        List<EventModel> eventModels =
+                EventConverter.convertEvents(eventRepository.findTop10ByOrderByMostProbableResultDesc());
+
+        return new ResponseEntity<>(eventModels, HttpStatus.OK);
     }
 }

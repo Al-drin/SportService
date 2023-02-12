@@ -56,6 +56,9 @@ public class Event {
     @Column(name = "PROBABILITY_AWAY_TEAM_WINNER")
     private BigDecimal awayTeamWin;
 
+    @Column(name = "MOST_PROBABLE_RESULT")
+    private BigDecimal mostProbableResult;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
