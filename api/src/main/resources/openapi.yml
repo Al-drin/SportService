@@ -17,7 +17,7 @@ paths:
       operationId: getEvents
       responses:
         '200':
-          description: A PDF file
+          description: result as text
           content:
             text/plain:
               schema:
@@ -44,6 +44,19 @@ paths:
           description: created successfully
         '400':
           description: creation unsucceful
+  /sportservice/teams:
+    get:
+      tags:
+        - event-controller
+      summary: List all team names
+      operationId: getTeams
+      responses:
+        '200':
+          description: result as text
+          content:
+            text/plain:
+              schema:
+                type: string
 components:
   schemas:
     EventModel:

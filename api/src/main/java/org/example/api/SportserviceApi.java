@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-12T18:16:53.877393400+01:00[Europe/Warsaw]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-12T18:50:44.717575400+01:00[Europe/Warsaw]")
 @Validated
 @Api(value = "sportservice", description = "the sportservice API")
 public interface SportserviceApi {
@@ -47,16 +47,32 @@ public interface SportserviceApi {
     /**
      * GET /sportservice/events : List events by given parameters
      *
-     * @return A PDF file (status code 200)
+     * @return result as text (status code 200)
      */
     @ApiOperation(value = "List events by given parameters", nickname = "getEvents", notes = "", response = String.class, tags={ "event-controller", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "A PDF file", response = String.class) })
+        @ApiResponse(code = 200, message = "result as text", response = String.class) })
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/sportservice/events",
         produces = { "text/plain" }
     )
     ResponseEntity<String> getEvents();
+
+
+    /**
+     * GET /sportservice/teams : List all team names
+     *
+     * @return result as text (status code 200)
+     */
+    @ApiOperation(value = "List all team names", nickname = "getTeams", notes = "", response = String.class, tags={ "event-controller", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "result as text", response = String.class) })
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/sportservice/teams",
+        produces = { "text/plain" }
+    )
+    ResponseEntity<String> getTeams();
 
 }

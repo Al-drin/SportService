@@ -6,6 +6,7 @@ import org.example.domain.Competitor;
 import org.example.domain.Event;
 import org.example.domain.Qualifier;
 import org.example.model.InlineObject;
+import org.example.repository.CompetitorRepository;
 import org.example.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ import java.util.List;
 
 @Controller
 public class EventController implements SportserviceApi {
+
+    @Autowired
+    CompetitorRepository competitorRepository;
 
     @Autowired
     EventRepository eventRepository;
@@ -78,6 +82,21 @@ public class EventController implements SportserviceApi {
             result.append("\n");
         }
 
+
+        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> getTeams() {
+        List<String> teamNames = competitorRepository.getUniqueCompetitorNames();
+
+        StringBuilder result = new StringBuilder();
+
+        result.append("Team names:\n\n");
+
+        for (String name : teamNames) {
+            result.append(name+"\n");
+        }
 
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
