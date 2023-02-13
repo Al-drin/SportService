@@ -14,6 +14,12 @@ paths:
       tags:
         - event-controller
       summary: List events by given parameters
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: integer
+          required: true
       operationId: getEvents
       responses:
         '200':

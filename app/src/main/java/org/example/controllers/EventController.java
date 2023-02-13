@@ -36,12 +36,21 @@ public class EventController implements SportserviceApi {
     }
 
     @Override
-    public ResponseEntity<String> getEvents() {
-        List<Event> events = eventRepository.findTop10ByOrderByMostProbableResultDesc();
+    public ResponseEntity<String> getEvents(Integer q) {
+        List<Event> events;
+
+        switch (q) {
+            case 15 -> events = eventRepository.findTop15ByOrderByMostProbableResultDesc();
+            case 20 -> events = eventRepository.findTop20ByOrderByMostProbableResultDesc();
+            case 100 -> events = eventRepository.findTop100ByOrderByMostProbableResultDesc();
+            default -> {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
 
         StringBuilder result = new StringBuilder();
 
-        result.append("10 most probable results:\n");
+        result.append(q+" most probable results:\n");
         result.append("\n");
 
         int i = 1;
@@ -67,7 +76,7 @@ public class EventController implements SportserviceApi {
             result.append(home.getName()+" ("+home.getCountry()+")");
             result.append(" vs ");
             result.append(away.getName()+" ("+away.getCountry()+")\n");
-            result.append("Venue: "+event.getVenue().getName()+"\n");
+            result.append("Venue: "+(event.getVenue()==null?"unknown":event.getVenue().getName())+"\n");
             result.append("Highest probable result: ");
 
             if (event.getMostProbableResult().equals(event.getHomeTeamWin())) {

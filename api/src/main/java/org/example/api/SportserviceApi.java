@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-12T18:50:44.717575400+01:00[Europe/Warsaw]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-13T06:48:29.765746900+01:00[Europe/Warsaw]")
 @Validated
 @Api(value = "sportservice", description = "the sportservice API")
 public interface SportserviceApi {
@@ -47,6 +47,7 @@ public interface SportserviceApi {
     /**
      * GET /sportservice/events : List events by given parameters
      *
+     * @param q  (required)
      * @return result as text (status code 200)
      */
     @ApiOperation(value = "List events by given parameters", nickname = "getEvents", notes = "", response = String.class, tags={ "event-controller", })
@@ -57,7 +58,7 @@ public interface SportserviceApi {
         value = "/sportservice/events",
         produces = { "text/plain" }
     )
-    ResponseEntity<String> getEvents();
+    ResponseEntity<String> getEvents(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "q", required = true) Integer q);
 
 
     /**

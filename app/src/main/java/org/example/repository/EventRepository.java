@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    List<Event> findTop10ByOrderByMostProbableResultDesc();
+    List<Event> findTop15ByOrderByMostProbableResultDesc();
+    List<Event> findTop20ByOrderByMostProbableResultDesc();
+    List<Event> findTop100ByOrderByMostProbableResultDesc();
 
 }
