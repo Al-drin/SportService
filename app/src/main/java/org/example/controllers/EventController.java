@@ -19,11 +19,15 @@ import java.util.List;
 @Controller
 public class EventController implements SportserviceApi {
 
-    @Autowired
     CompetitorRepository competitorRepository;
 
-    @Autowired
     EventRepository eventRepository;
+
+    @Autowired
+    public EventController(CompetitorRepository competitorRepository, EventRepository eventRepository) {
+        this.competitorRepository = competitorRepository;
+        this.eventRepository = eventRepository;
+    }
 
     @Override
     public ResponseEntity<Void> addEvents(InlineObject inlineObject) {
@@ -35,6 +39,8 @@ public class EventController implements SportserviceApi {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    // TODO: 16.02.2023 refactor, perhaps a view object; this method should just get the list of events, a different
+    //                  method should handle presentation as a string
     @Override
     public ResponseEntity<String> getEvents(Integer q) {
         List<Event> events;
@@ -95,6 +101,7 @@ public class EventController implements SportserviceApi {
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
+    // TODO: 15.02.2023 rework to TeamsController
     @Override
     public ResponseEntity<String> getTeams() {
         List<String> teamNames = competitorRepository.getUniqueCompetitorNames();
