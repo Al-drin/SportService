@@ -26,6 +26,6 @@ It's recommended to use [Postman](https://www.postman.com/downloads/) to test th
 Test data can be found in the [/input](https://github.com/Al-drin/SportService/tree/master/input) subcatalog.
 
 ### TODO
-- Unit Tests
+- more unit tests
 - refactoring and code cleaning
 - exception handling with bad data
