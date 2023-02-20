@@ -62,10 +62,10 @@ class EventControllerTest {
      * getEvents method accepts either 15, 20 or 100 query number
      */
     @Test
-    void getEvents_validRequestEmptyRepository_emptyResponseBodyStatusOKReturned() {
+    void getEvents_validRequestEmptyRepository_notFoundStatusReturned() {
         //given
         ResponseEntity<String> expected =
-                new ResponseEntity<>("15 most probable results:\n\n",HttpStatus.OK);
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
         //when
         ResponseEntity<String> response = controller.getEvents(15);
         //then
@@ -73,7 +73,7 @@ class EventControllerTest {
     }
 
     @Test
-    void getEvents_invalidRequest_responseWithBadRequestStatusReturned() {
+    void getEvents_invalidRequest_badRequestStatusReturned() {
         //given
         ResponseEntity<String> expected = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         //when
@@ -83,9 +83,9 @@ class EventControllerTest {
     }
 
     @Test
-    void getTeams_emptyRepository_emptyResponseReturned() {
+    void getTeams_emptyRepository_notFoundStatusReturned() {
         //given
-        ResponseEntity<String> expected = new ResponseEntity<>("Team names:\n\n", HttpStatus.OK);
+        ResponseEntity<String> expected = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         //when
         ResponseEntity<String> response = controller.getTeams();
         //then

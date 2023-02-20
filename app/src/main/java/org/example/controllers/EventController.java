@@ -54,6 +54,10 @@ public class EventController implements SportserviceApi {
             }
         }
 
+        if (events.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         StringBuilder result = new StringBuilder();
 
         result.append(q+" most probable results:\n");
@@ -105,6 +109,10 @@ public class EventController implements SportserviceApi {
     @Override
     public ResponseEntity<String> getTeams() {
         List<String> teamNames = competitorRepository.getUniqueCompetitorNames();
+
+        if (teamNames.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         StringBuilder result = new StringBuilder();
 
