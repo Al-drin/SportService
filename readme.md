@@ -9,9 +9,20 @@ For building and running the application you need:
 - [JDK](https://www.oracle.com/java/technologies/downloads/)
 - [Gradle](https://gradle.org/install/)
 
+### Application structure
+
+We have 3 modules:
+- **api** - which mainly holds auto-generated open-api classes and model classes;
+    most notable is the openapi.yml sitting in api/src/main/resources
+- **data** - holding the domain package with all the data classes
+- **app** - with the entry point in the `Application` class and most notably the `EventController` class
+    containing most of the app logic, but also Spring Security config class,
+    converters for translating model to domain classes and Spring Data JPA repositories
+        
+
 ### Running the application locally
 
-Simplest way of running the application is to execute the `main` method in the `dorg.example.Application`
+Simplest way of running the application is to execute the `main` method in the `org.example.Application`
 class from your IDE.
 
 After the application executes it will enable you to access a couple of addresses:
