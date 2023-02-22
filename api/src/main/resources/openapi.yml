@@ -38,18 +38,13 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                Events:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/EventModel'
-                  
+              $ref: '#/components/schemas/EventsModel'
+
       responses:
         '201':
           description: created successfully
         '400':
-          description: creation unsucceful
+          description: creation unsuccessful
   /sportservice/teams:
     get:
       tags:
@@ -65,6 +60,13 @@ paths:
                 type: string
 components:
   schemas:
+    EventsModel:
+      type: object
+      properties:
+        Events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventModel'
     EventModel:
       type: object
       properties:
@@ -107,7 +109,7 @@ components:
     CompetitorModel:
       type: object
       properties:
-        id: 
+        id:
           type: string
           example: sr:competitor:37863
         name:

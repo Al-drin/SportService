@@ -4,5 +4,5 @@ src/main/java/org/example/api/ApiUtil.java
 src/main/java/org/example/api/SportserviceApi.java
 src/main/java/org/example/model/CompetitorModel.java
 src/main/java/org/example/model/EventModel.java
-src/main/java/org/example/model/InlineObject.java
+src/main/java/org/example/model/EventsModel.java
 src/main/java/org/example/model/VenueModel.java

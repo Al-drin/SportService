@@ -13,20 +13,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * InlineObject
+ * EventsModel
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-13T06:48:29.765746900+01:00[Europe/Warsaw]")
-public class InlineObject   {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-22T14:08:55.761294+01:00[Europe/Warsaw]")
+public class EventsModel   {
   @JsonProperty("Events")
   @Valid
   private List<EventModel> events = null;
 
-  public InlineObject events(List<EventModel> events) {
+  public EventsModel events(List<EventModel> events) {
     this.events = events;
     return this;
   }
 
-  public InlineObject addEventsItem(EventModel eventsItem) {
+  public EventsModel addEventsItem(EventModel eventsItem) {
     if (this.events == null) {
       this.events = new ArrayList<>();
     }
@@ -59,8 +59,8 @@ public class InlineObject   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    InlineObject inlineObject = (InlineObject) o;
-    return Objects.equals(this.events, inlineObject.events);
+    EventsModel eventsModel = (EventsModel) o;
+    return Objects.equals(this.events, eventsModel.events);
   }
 
   @Override
@@ -71,7 +71,7 @@ public class InlineObject   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class InlineObject {\n");
+    sb.append("class EventsModel {\n");
     
     sb.append("    events: ").append(toIndentedString(events)).append("\n");
     sb.append("}");

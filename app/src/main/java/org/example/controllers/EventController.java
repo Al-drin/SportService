@@ -5,7 +5,7 @@ import org.example.converters.EventConverter;
 import org.example.domain.Competitor;
 import org.example.domain.Event;
 import org.example.domain.Qualifier;
-import org.example.model.InlineObject;
+import org.example.model.EventsModel;
 import org.example.repository.CompetitorRepository;
 import org.example.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ public class EventController implements SportserviceApi {
     }
 
     @Override
-    public ResponseEntity<Void> addEvents(InlineObject inlineObject) {
+    public ResponseEntity<Void> addEvents(EventsModel eventsModel) {
 
-        inlineObject.getEvents().stream()
+        eventsModel.getEvents().stream()
                 .map(EventConverter::convertModel)
                 .forEach(event -> eventRepository.save(event));
 
@@ -69,6 +69,7 @@ public class EventController implements SportserviceApi {
         Competitor away;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
 
         for (Event event : events) {
             result.append((i++)+"#\n");

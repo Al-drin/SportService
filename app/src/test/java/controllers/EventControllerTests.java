@@ -4,7 +4,7 @@ import org.example.controllers.EventController;
 import org.example.converters.EventConverter;
 import org.example.model.CompetitorModel;
 import org.example.model.EventModel;
-import org.example.model.InlineObject;
+import org.example.model.EventsModel;
 import org.example.model.VenueModel;
 import org.example.repository.CompetitorRepository;
 import org.example.repository.EventRepository;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class EventControllerTest {
+class EventControllerTests {
 
     @InjectMocks
     EventController controller;
@@ -39,7 +39,7 @@ class EventControllerTest {
     @Test
     void addEvents_validDataGiven_repositoryWrittenValidResponseReturned() {
         //given
-        InlineObject data = new InlineObject();
+        EventsModel data = new EventsModel();
         data.addEventsItem(getTestEventModel());
         //when
         ResponseEntity<Void> response = controller.addEvents(data);
@@ -51,7 +51,7 @@ class EventControllerTest {
     @Test
     void addEvents_invalidDataGiven_exceptionThrown() {
         //given
-        InlineObject data = new InlineObject();
+        EventsModel data = new EventsModel();
         data.addEventsItem(new EventModel());
         //when
         //then

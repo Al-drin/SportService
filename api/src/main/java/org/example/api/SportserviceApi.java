@@ -5,7 +5,7 @@
  */
 package org.example.api;
 
-import org.example.model.InlineObject;
+import org.example.model.EventsModel;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-13T06:48:29.765746900+01:00[Europe/Warsaw]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-22T14:08:55.761294+01:00[Europe/Warsaw]")
 @Validated
 @Api(value = "sportservice", description = "the sportservice API")
 public interface SportserviceApi {
@@ -28,20 +28,20 @@ public interface SportserviceApi {
     /**
      * POST /sportservice/events : Add events to database
      *
-     * @param inlineObject  (required)
+     * @param eventsModel  (required)
      * @return created successfully (status code 201)
-     *         or creation unsucceful (status code 400)
+     *         or creation unsuccessful (status code 400)
      */
     @ApiOperation(value = "Add events to database", nickname = "addEvents", notes = "", tags={ "event-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "created successfully"),
-        @ApiResponse(code = 400, message = "creation unsucceful") })
+        @ApiResponse(code = 400, message = "creation unsuccessful") })
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/sportservice/events",
         consumes = { "application/json" }
     )
-    ResponseEntity<Void> addEvents(@ApiParam(value = "", required = true) @Valid @RequestBody InlineObject inlineObject);
+    ResponseEntity<Void> addEvents(@ApiParam(value = "", required = true) @Valid @RequestBody EventsModel eventsModel);
 
 
     /**
