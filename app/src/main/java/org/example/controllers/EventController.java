@@ -9,6 +9,7 @@ import org.example.model.EventsModel;
 import org.example.repository.CompetitorRepository;
 import org.example.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,12 @@ import java.util.List;
 @Controller
 public class EventController implements SportserviceApi {
 
-    CompetitorRepository competitorRepository;
+    public static final int EVENTS_MAX_QUERY = 200;
+    public static final int TEAMS_MAX_QUERY = 200;
 
-    EventRepository eventRepository;
+    private final CompetitorRepository competitorRepository;
+
+    private final EventRepository eventRepository;
 
     @Autowired
     public EventController(CompetitorRepository competitorRepository, EventRepository eventRepository) {
@@ -34,7 +38,7 @@ public class EventController implements SportserviceApi {
 
         eventsModel.getEvents().stream()
                 .map(EventConverter::convertModel)
-                .forEach(event -> eventRepository.save(event));
+                .forEach(eventRepository::save);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -43,20 +47,22 @@ public class EventController implements SportserviceApi {
     //                  method should handle presentation as a string
     @Override
     public ResponseEntity<String> getEvents(Integer q) {
-        List<Event> events;
 
-        switch (q) {
-            case 15 -> events = eventRepository.findTop15ByOrderByMostProbableResultDesc();
-            case 20 -> events = eventRepository.findTop20ByOrderByMostProbableResultDesc();
-            case 100 -> events = eventRepository.findTop100ByOrderByMostProbableResultDesc();
-            default -> {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-        }
-
-        if (events.isEmpty()) {
+        if (eventRepository.count() == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        if (q > EVENTS_MAX_QUERY) {
+            return new ResponseEntity<>("Too many results requested, max query size: " + EVENTS_MAX_QUERY,
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        if (eventRepository.count() < q) {
+            return new ResponseEntity<>("Too many results requested, only available: " + q,
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        List<Event> events = eventRepository.findAllByOrderByMostProbableResultDesc(PageRequest.of(0, q));
 
         StringBuilder result = new StringBuilder();
 
@@ -125,4 +131,5 @@ public class EventController implements SportserviceApi {
 
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
+
 }

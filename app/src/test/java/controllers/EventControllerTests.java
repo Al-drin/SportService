@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EventControllerTests {
@@ -67,7 +67,7 @@ class EventControllerTests {
         ResponseEntity<String> expected =
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
         //when
-        ResponseEntity<String> response = controller.getEvents(15);
+        ResponseEntity<String> response = controller.getEvents(1);
         //then
         assertEquals(expected, response);
     }
@@ -75,9 +75,11 @@ class EventControllerTests {
     @Test
     void getEvents_invalidRequest_badRequestStatusReturned() {
         //given
-        ResponseEntity<String> expected = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        when(eventRepository.count()).thenReturn(1L);
+        ResponseEntity<String> expected = new ResponseEntity<>("Too many results requested, max query size: "
+                        + EventController.EVENTS_MAX_QUERY, HttpStatus.BAD_REQUEST);
         //when
-        ResponseEntity<String> response = controller.getEvents(10);
+        ResponseEntity<String> response = controller.getEvents(EventController.EVENTS_MAX_QUERY + 1);
         //then
         assertEquals(expected, response);
     }
