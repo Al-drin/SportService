@@ -1,115 +1,54 @@
 package org.example.controllers;
 
 import org.example.api.SportserviceApi;
-import org.example.converters.EventConverter;
-import org.example.domain.Competitor;
-import org.example.domain.Event;
-import org.example.domain.Qualifier;
 import org.example.model.EventsModel;
 import org.example.repository.CompetitorRepository;
-import org.example.repository.EventRepository;
+import org.example.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
 public class EventController implements SportserviceApi {
 
-    public static final int EVENTS_MAX_QUERY = 200;
     public static final int TEAMS_MAX_QUERY = 200;
 
     private final CompetitorRepository competitorRepository;
 
-    private final EventRepository eventRepository;
+    private final EventService eventService;
 
     @Autowired
-    public EventController(CompetitorRepository competitorRepository, EventRepository eventRepository) {
+    public EventController(CompetitorRepository competitorRepository, EventService eventService) {
         this.competitorRepository = competitorRepository;
-        this.eventRepository = eventRepository;
+        this.eventService = eventService;
     }
 
     @Override
     public ResponseEntity<Void> addEvents(EventsModel eventsModel) {
 
-        eventsModel.getEvents().stream()
-                .map(EventConverter::convertModel)
-                .forEach(eventRepository::save);
+        eventService.addEvents(eventsModel);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    // TODO: 16.02.2023 refactor, perhaps a view object; this method should just get the list of events, a different
-    //                  method should handle presentation as a string
     @Override
     public ResponseEntity<String> getEvents(Integer q) {
 
-        if (eventRepository.count() == 0) {
+        if (eventService.eventRepositoryEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if (q > EVENTS_MAX_QUERY) {
-            return new ResponseEntity<>("Too many results requested, max query size: " + EVENTS_MAX_QUERY,
-                    HttpStatus.BAD_REQUEST);
+        if (!eventService.queryNumberValid(q)) {
+            return new ResponseEntity<>("Too many results requested, max query size: "
+                    + eventService.getMaxQuery(), HttpStatus.BAD_REQUEST);
         }
 
-        if (eventRepository.count() < q) {
-            return new ResponseEntity<>("Too many results requested, only available: " + q,
-                    HttpStatus.BAD_REQUEST);
-        }
+        String response = eventService.printEvents(q);
 
-        List<Event> events = eventRepository.findAllByOrderByMostProbableResultDesc(PageRequest.of(0, q));
-
-        StringBuilder result = new StringBuilder();
-
-        result.append(q+" most probable results:\n");
-        result.append("\n");
-
-        int i = 1;
-
-        Competitor home;
-        Competitor away;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-
-        for (Event event : events) {
-            result.append((i++)+"#\n");
-            result.append("Start date: "+formatter.format(event.getStartDate().toLocalDateTime())+"\n");
-            result.append("Competition: "+event.getCompetitionName()+"\n");
-
-            if (event.getCompetitors().get(0).getQualifier() == Qualifier.HOME) {
-                home = event.getCompetitors().get(0);
-                away = event.getCompetitors().get(1);
-            } else {
-                home = event.getCompetitors().get(1);
-                away = event.getCompetitors().get(0);
-            }
-
-            result.append(home.getName()+" ("+home.getCountry()+")");
-            result.append(" vs ");
-            result.append(away.getName()+" ("+away.getCountry()+")\n");
-            result.append("Venue: "+(event.getVenue()==null?"unknown":event.getVenue().getName())+"\n");
-            result.append("Highest probable result: ");
-
-            if (event.getMostProbableResult().equals(event.getHomeTeamWin())) {
-                result.append("HOME_TEAM_WIN");
-            } else if (event.getMostProbableResult().equals(event.getAwayTeamWin())) {
-                result.append("AWAY_TEAM_WIN");
-            } else {
-                result.append("DRAW");
-            }
-
-            result.append(" ("+event.getMostProbableResult()+")\n");
-            result.append("\n");
-        }
-
-
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // TODO: 15.02.2023 rework to TeamsController

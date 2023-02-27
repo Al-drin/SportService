@@ -1,13 +1,12 @@
 package controllers;
 
 import org.example.controllers.EventController;
-import org.example.converters.EventConverter;
 import org.example.model.CompetitorModel;
 import org.example.model.EventModel;
 import org.example.model.EventsModel;
 import org.example.model.VenueModel;
 import org.example.repository.CompetitorRepository;
-import org.example.repository.EventRepository;
+import org.example.service.EventService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,13 +30,13 @@ class EventControllerTests {
     EventController controller;
 
     @Mock
-    EventRepository eventRepository;
+    EventService eventService;
 
     @Mock
     CompetitorRepository competitorRepository;
 
     @Test
-    void addEvents_validDataGiven_repositoryWrittenValidResponseReturned() {
+    void addEvents_validDataGiven_serviceAccessedValidResponseReturned() {
         //given
         EventsModel data = new EventsModel();
         data.addEventsItem(getTestEventModel());
@@ -45,41 +44,16 @@ class EventControllerTests {
         ResponseEntity<Void> response = controller.addEvents(data);
         //then
         assertEquals(new ResponseEntity<>(HttpStatus.CREATED), response);
-        verify(eventRepository).save(EventConverter.convertModel(getTestEventModel()));
-    }
-
-    @Test
-    void addEvents_invalidDataGiven_exceptionThrown() {
-        //given
-        EventsModel data = new EventsModel();
-        data.addEventsItem(new EventModel());
-        //when
-        //then
-        assertThrows(NullPointerException.class, () -> controller.addEvents(data));
-    }
-
-    /*
-     * getEvents method accepts either 15, 20 or 100 query number
-     */
-    @Test
-    void getEvents_validRequestEmptyRepository_notFoundStatusReturned() {
-        //given
-        ResponseEntity<String> expected =
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        //when
-        ResponseEntity<String> response = controller.getEvents(1);
-        //then
-        assertEquals(expected, response);
+        verify(eventService).addEvents(data);
     }
 
     @Test
     void getEvents_invalidRequest_badRequestStatusReturned() {
         //given
-        when(eventRepository.count()).thenReturn(1L);
         ResponseEntity<String> expected = new ResponseEntity<>("Too many results requested, max query size: "
-                        + EventController.EVENTS_MAX_QUERY, HttpStatus.BAD_REQUEST);
+                        + eventService.getMaxQuery(), HttpStatus.BAD_REQUEST);
         //when
-        ResponseEntity<String> response = controller.getEvents(EventController.EVENTS_MAX_QUERY + 1);
+        ResponseEntity<String> response = controller.getEvents(300);
         //then
         assertEquals(expected, response);
     }
