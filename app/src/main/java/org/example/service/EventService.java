@@ -44,6 +44,7 @@ public class EventService {
 
         //event specific string
         String eventString = """
+                %d#
                 Start date: %s
                 Competition: %s
                 %s (%s) vs. %s (%s)
@@ -91,6 +92,7 @@ public class EventService {
 
             //formatting event string, appending the message
             message.append(String.format(eventString,
+                    i+1,
                     startDate,
                     event.getCompetitionName(),
                     home.getName(), home.getCountry(), away.getName(), away.getCountry(),
