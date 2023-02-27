@@ -32,14 +32,25 @@ public class EventService {
      * Competition: Soccer
      * Slavia Prague (Czech Republic)  vs. Ferencvarosi Budapest (Hungary),
      * Venue: Sinobo Stadium,
-     * Highest probable result : HOME_TEAM_WIN (65.9)
+     * Highest probable result: HOME_TEAM_WIN (65.9)
      */
     public String printEvents(Integer q) {
         List<Event> events = eventRepository.findAllByOrderByMostProbableResultDesc(PageRequest.of(0, q));
 
         StringBuilder message = new StringBuilder();
 
-        message.append(q).append(" most probable results:\n\n");
+        //header
+        message.append(String.format("%d most probable results:%n%n", q));
+
+        //event specific string
+        String eventString = """
+                Start date: %s
+                Competition: %s
+                %s (%s) vs. %s (%s)
+                Venue: %s
+                Highest probable result: %s (%.1f)
+                
+                """;
 
         Event event;
 
@@ -56,7 +67,8 @@ public class EventService {
         for (int i=0; i<q; i++) {
 
             //setting variables
-            event = events.get(q);
+            event = events.get(i);
+
             startDate = formatter.format(event.getStartDate().toLocalDateTime());
 
             if (event.getCompetitors().get(0).getQualifier() == Qualifier.HOME) {
@@ -77,21 +89,12 @@ public class EventService {
                 resultDescription = "DRAW";
             }
 
-            //constricting message
-            message.append(i+1).append("#\n");
-
-            message.append("Start date: ").append(startDate).append("\n");
-
-            message.append("Competition: ").append(event.getCompetitionName()).append("\n");
-
-            message.append(home.getName()).append(" (").append(home.getCountry()).append(")");
-            message.append(" vs ");
-            message.append(away.getName()).append(" (").append(away.getCountry()).append(")\n");
-
-            message.append("Venue: ").append(venueName).append("\n");
-
-            message.append("Highest probable resultDescription: ").append(resultDescription);
-            message.append(" (").append(event.getMostProbableResult()).append(")\n\n");
+            //formatting event string, appending the message
+            message.append(String.format(eventString,
+                    startDate,
+                    event.getCompetitionName(),
+                    home.getName(), home.getCountry(), away.getName(), away.getCountry(),
+                    venueName, resultDescription, event.getMostProbableResult()));
         }
 
         return message.toString();
