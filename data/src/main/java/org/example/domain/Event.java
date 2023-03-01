@@ -8,7 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,11 +38,13 @@ public class Event {
     @Column(name = "SEASON_NAME")
     private String seasonName;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name="COMPETITORS_EVENTS",
-//            joinColumns=@JoinColumn(name="EVENT_ID"), inverseJoinColumns=@JoinColumn(name="COMPETITOR_ID"))
-    @JoinColumn(name = "COMPETITORS")
-    private List<Competitor> competitors;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "HOME_COMPETITOR")
+    private Competitor homeCompetitor;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "AWAY_COMPETITOR")
+    private Competitor awayCompetitor;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "VENUE_ID")
@@ -59,39 +62,8 @@ public class Event {
     @Column(name = "MOST_PROBABLE_RESULT")
     private BigDecimal mostProbableResult;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Event event)) return false;
-
-        if (competitionId != event.competitionId) return false;
-        if (!id.equals(event.id)) return false;
-        if (!startDate.equals(event.startDate)) return false;
-        if (!sportName.equals(event.sportName)) return false;
-        if (!competitionName.equals(event.competitionName)) return false;
-        if (!seasonName.equals(event.seasonName)) return false;
-        if (!competitors.equals(event.competitors)) return false;
-        if (!venue.equals(event.venue)) return false;
-        if (!homeTeamWin.equals(event.homeTeamWin)) return false;
-        if (!draw.equals(event.draw)) return false;
-        return awayTeamWin.equals(event.awayTeamWin);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + sportName.hashCode();
-        result = 31 * result + competitionName.hashCode();
-        result = 31 * result + competitionId;
-        result = 31 * result + seasonName.hashCode();
-        result = 31 * result + competitors.hashCode();
-        result = 31 * result + venue.hashCode();
-        result = 31 * result + homeTeamWin.hashCode();
-        result = 31 * result + draw.hashCode();
-        result = 31 * result + awayTeamWin.hashCode();
-        return result;
-    }
+    @Column(name = "MOST_PROBABLE_RESULT_DESCRIPTION")
+    private ResultDescription mostProbableResultDescription;
 
     @Override
     public String toString() {
@@ -102,11 +74,65 @@ public class Event {
                 ", competitionName='" + competitionName + '\'' +
                 ", competitionId=" + competitionId +
                 ", seasonName='" + seasonName + '\'' +
-                ", competitors=" + competitors +
+                ", homeCompetitor=" + homeCompetitor +
+                ", awayCompetitor=" + awayCompetitor +
                 ", venue=" + venue +
                 ", homeTeamWin=" + homeTeamWin +
                 ", draw=" + draw +
                 ", awayTeamWin=" + awayTeamWin +
+                ", mostProbableResult=" + mostProbableResult +
+                ", mostProbableResultDescription=" + mostProbableResultDescription +
                 '}';
+    }
+
+    public String toFormattedString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        return "Start date: " + formatter.format(startDate.toLocalDateTime()) + "\n" +
+                "Competition: " + competitionName + "\n" +
+                homeCompetitor.getName() + " (" + homeCompetitor.getCountry() + ") vs. " +
+                awayCompetitor.getName() + " (" + awayCompetitor.getCountry() + ")\n" +
+                "Venue: " + venue.getName() + "\n" +
+                "Highest probable result: " + mostProbableResultDescription + " (" + mostProbableResult + ")\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event event)) return false;
+
+        if (competitionId != event.competitionId) return false;
+        if (!Objects.equals(id, event.id)) return false;
+        if (!Objects.equals(startDate, event.startDate)) return false;
+        if (!Objects.equals(sportName, event.sportName)) return false;
+        if (!Objects.equals(competitionName, event.competitionName)) return false;
+        if (!Objects.equals(seasonName, event.seasonName)) return false;
+        if (!Objects.equals(homeCompetitor, event.homeCompetitor)) return false;
+        if (!Objects.equals(awayCompetitor, event.awayCompetitor)) return false;
+        if (!Objects.equals(venue, event.venue)) return false;
+        if (!Objects.equals(homeTeamWin, event.homeTeamWin)) return false;
+        if (!Objects.equals(draw, event.draw)) return false;
+        if (!Objects.equals(awayTeamWin, event.awayTeamWin)) return false;
+        if (!Objects.equals(mostProbableResult, event.mostProbableResult)) return false;
+        return mostProbableResultDescription == event.mostProbableResultDescription;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+        result = 31 * result + (sportName != null ? sportName.hashCode() : 0);
+        result = 31 * result + (competitionName != null ? competitionName.hashCode() : 0);
+        result = 31 * result + competitionId;
+        result = 31 * result + (seasonName != null ? seasonName.hashCode() : 0);
+        result = 31 * result + (homeCompetitor != null ? homeCompetitor.hashCode() : 0);
+        result = 31 * result + (awayCompetitor != null ? awayCompetitor.hashCode() : 0);
+        result = 31 * result + (venue != null ? venue.hashCode() : 0);
+        result = 31 * result + (homeTeamWin != null ? homeTeamWin.hashCode() : 0);
+        result = 31 * result + (draw != null ? draw.hashCode() : 0);
+        result = 31 * result + (awayTeamWin != null ? awayTeamWin.hashCode() : 0);
+        result = 31 * result + (mostProbableResult != null ? mostProbableResult.hashCode() : 0);
+        result = 31 * result + (mostProbableResultDescription != null ? mostProbableResultDescription.hashCode() : 0);
+        return result;
     }
 }

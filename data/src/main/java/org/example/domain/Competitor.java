@@ -29,10 +29,6 @@ public class Competitor {
     private String abbreviation;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "QUALIFIER")
-    private Qualifier qualifier;
-
-    @Enumerated(EnumType.STRING)
     @Column(name = "GENDER")
     private Gender gender;
 
@@ -46,7 +42,6 @@ public class Competitor {
         if (!country.equals(that.country)) return false;
         if (!countryCode.equals(that.countryCode)) return false;
         if (!abbreviation.equals(that.abbreviation)) return false;
-        if (qualifier != that.qualifier) return false;
         return gender == that.gender;
     }
 
@@ -57,7 +52,6 @@ public class Competitor {
         result = 31 * result + country.hashCode();
         result = 31 * result + countryCode.hashCode();
         result = 31 * result + abbreviation.hashCode();
-        result = 31 * result + qualifier.hashCode();
         result = 31 * result + gender.hashCode();
         return result;
     }
@@ -70,7 +64,6 @@ public class Competitor {
                 ", country='" + country + '\'' +
                 ", countryCode='" + countryCode + '\'' +
                 ", abbreviation='" + abbreviation + '\'' +
-                ", qualifier=" + qualifier +
                 ", gender=" + gender +
                 '}';
     }

@@ -37,11 +37,11 @@ public class EventController implements SportserviceApi {
     @Override
     public ResponseEntity<String> getEvents(Integer q) {
 
-        if (eventService.eventRepositoryEmpty()) {
+        if (eventService.isEventRepositoryEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if (!eventService.queryNumberValid(q)) {
+        if (!eventService.isQueryNumberValid(q)) {
             return new ResponseEntity<>("Too many results requested, max query size: "
                     + eventService.getMaxQuery(), HttpStatus.BAD_REQUEST);
         }
