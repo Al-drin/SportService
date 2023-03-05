@@ -1,8 +1,11 @@
 # SportService
 Spring Boot implementation of a Sport Event backend webservice
 
-**16.02.2022**  
+**16.02.2023**  
 **Szymon Garbień**
+
+**05.03.2023 Update:**
+Code has been refactored and cleaned to be much more readable.
 
 ### Reguirements:
 For building and running the application you need:
@@ -15,7 +18,7 @@ We have 3 modules:
 - **api** - which mainly holds auto-generated open-api classes and model classes;
     most notable is the openapi.yml sitting in api/src/main/resources
 - **data** - holding the domain package with all the data classes
-- **app** - with the entry point in the `Application` class and most notably the `EventController` class
+- **app** - with the entry point in the `Application` class and most notably the `SportController` class
     containing most of the app logic, but also Spring Security config class,
     converters for translating model to domain classes and Spring Data JPA repositories
         
@@ -38,5 +41,4 @@ Test data can be found in the [/input](https://github.com/Al-drin/SportService/t
 
 ### TODO
 - more unit tests
-- refactoring and code cleaning
 - exception handling with bad data
