@@ -6,13 +6,13 @@ info:
 servers:
   - url: http://localhost:8080
 tags:
-  - name: event-controller
-    description: the vet-service API
+  - name: sport-controller
+    description: the sport-service API
 paths:
   /sportservice/events:
     get:
       tags:
-        - event-controller
+        - sport-controller
       summary: List events by given parameters
       parameters:
         - in: query
@@ -30,7 +30,7 @@ paths:
                 type: string
     post:
       tags:
-        - event-controller
+        - sport-controller
       summary: Add events to database
       operationId: addEvents
       requestBody:
@@ -48,7 +48,7 @@ paths:
   /sportservice/teams:
     get:
       tags:
-        - event-controller
+        - sport-controller
       summary: List all team names
       operationId: getTeams
       responses:

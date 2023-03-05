@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-22T14:08:55.761294+01:00[Europe/Warsaw]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-03-05T13:00:35.590383600+01:00[Europe/Warsaw]")
 @Validated
 @Api(value = "sportservice", description = "the sportservice API")
 public interface SportserviceApi {
@@ -32,7 +32,7 @@ public interface SportserviceApi {
      * @return created successfully (status code 201)
      *         or creation unsuccessful (status code 400)
      */
-    @ApiOperation(value = "Add events to database", nickname = "addEvents", notes = "", tags={ "event-controller", })
+    @ApiOperation(value = "Add events to database", nickname = "addEvents", notes = "", tags={ "sport-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "created successfully"),
         @ApiResponse(code = 400, message = "creation unsuccessful") })
@@ -50,7 +50,7 @@ public interface SportserviceApi {
      * @param q  (required)
      * @return result as text (status code 200)
      */
-    @ApiOperation(value = "List events by given parameters", nickname = "getEvents", notes = "", response = String.class, tags={ "event-controller", })
+    @ApiOperation(value = "List events by given parameters", nickname = "getEvents", notes = "", response = String.class, tags={ "sport-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "result as text", response = String.class) })
     @RequestMapping(
@@ -66,7 +66,7 @@ public interface SportserviceApi {
      *
      * @return result as text (status code 200)
      */
-    @ApiOperation(value = "List all team names", nickname = "getTeams", notes = "", response = String.class, tags={ "event-controller", })
+    @ApiOperation(value = "List all team names", nickname = "getTeams", notes = "", response = String.class, tags={ "sport-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "result as text", response = String.class) })
     @RequestMapping(

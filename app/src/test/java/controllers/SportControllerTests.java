@@ -1,11 +1,12 @@
 package controllers;
 
-import org.example.controllers.EventController;
+import org.example.controllers.SportController;
 import org.example.model.CompetitorModel;
 import org.example.model.EventModel;
 import org.example.model.EventsModel;
 import org.example.model.VenueModel;
 import org.example.repository.CompetitorRepository;
+import org.example.service.CompetitorService;
 import org.example.service.EventService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,16 +25,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class EventControllerTests {
+class SportControllerTests {
 
     @InjectMocks
-    EventController controller;
+    SportController controller;
 
     @Mock
     EventService eventService;
 
     @Mock
-    CompetitorRepository competitorRepository;
+    CompetitorService competitorService;
 
     @Test
     void addEvents_validDataGiven_serviceAccessedValidResponseReturned() {
@@ -61,6 +62,7 @@ class EventControllerTests {
     @Test
     void getTeams_emptyRepository_notFoundStatusReturned() {
         //given
+        when(competitorService.isCompetitorRepositoryEmpty()).thenReturn(true);
         ResponseEntity<String> expected = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         //when
         ResponseEntity<String> response = controller.getTeams();
